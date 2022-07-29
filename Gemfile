@@ -5,6 +5,7 @@ ruby '3.1.2'
 
 gem 'devise'
 gem 'dotenv-rails'
+gem 'grape'
 gem 'net-smtp'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'

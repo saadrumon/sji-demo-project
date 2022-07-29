@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount API::Base, at: '/'
+
   devise_for :users, controllers: { registrations: 'users/registrations' }
   root to: "homes#index"
   resources :bank_accounts, only: %i[new create edit update destroy]
