@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_29_115835) do
+ActiveRecord::Schema.define(version: 2022_07_29_125959) do
 
   create_table "bank_accounts", charset: "utf8mb4", force: :cascade do |t|
     t.string "bank_name"
@@ -41,8 +41,15 @@ ActiveRecord::Schema.define(version: 2022_07_29_115835) do
     t.string "first_name"
     t.string "last_name"
     t.integer "payment_method"
+    t.boolean "is_admin", default: false
+    t.bigint "bank_account_id"
+    t.bigint "card_id"
+    t.index ["bank_account_id"], name: "index_users_on_bank_account_id"
+    t.index ["card_id"], name: "index_users_on_card_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "users", "bank_accounts"
+  add_foreign_key "users", "cards"
 end

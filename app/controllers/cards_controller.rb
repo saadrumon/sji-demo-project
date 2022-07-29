@@ -5,7 +5,10 @@ class CardsController < ApplicationController
 
   def create
     @card = Card.new(card_params)
+    @current_user = current_user
     if @card.save
+      @current_user.card_id = @card.id
+      @current_user.save
       redirect_to root_path,
                   notice: 'Card save successfully'
     else

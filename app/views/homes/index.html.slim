@@ -1,0 +1,14 @@
+- if current_user.is_admin? || current_user.card_id.present? || current_user.bank_account_id.present?
+  hr
+    marquee width="100%" direction="right"
+      h2.text-brand.text-center Welcome to Fuel management system
+    hr
+- else
+  -if current_user.Bank_account?
+    label Please add your
+    = link_to' bank account information ', new_bank_account_path(@bank_account)
+    label to continue
+  -else
+    label Please add your
+    = link_to' card information ', new_card_path(@card)
+    label to continue
