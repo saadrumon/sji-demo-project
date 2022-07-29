@@ -12,7 +12,7 @@ class User < ApplicationRecord
   CARD = 1
 
   enum payment_method: {
-    bank_account: BANK_ACCOUNT,
-    card: CARD
+    Bank_account: BANK_ACCOUNT,
+    Card: CARD
   }
 end
