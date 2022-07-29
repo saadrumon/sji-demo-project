@@ -1,5 +1,4 @@
 class BankAccountsController < ApplicationController
-  # before_action :set_bank_account, only: %i[new edit create update]
   def new
     @bank_account = BankAccount.new
   end
@@ -21,15 +20,6 @@ class BankAccountsController < ApplicationController
   end
   
   private
-
-  # def set_bank_account
-  #   begin
-  #     @bank_account = BankAccount.find(params[:bank_account_id])
-  #   rescue StandardError => e
-  #     redirect_to fallback_location: root_path,
-  #                 flash: { error: "Error occurred while fetching bank account" }
-  #   end
-  # end
   def bank_account_params
     params.require(:bank_account).permit(:bank_account_id,
                                            :bank_name,
