@@ -11,6 +11,8 @@ import "channels"
 import "bootstrap"
 import "../stylesheets/application"
 
+require.context("../images", true);
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
