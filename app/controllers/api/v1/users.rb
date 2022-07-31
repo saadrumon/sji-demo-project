@@ -1,8 +1,8 @@
-module API
+module Api
   module V1
     class Users < Grape::API
+      include Api::V1::Defaults
       
-      # TODO: Authenticate user with JWT token
       resource :users do
 
         desc 'Return all users'

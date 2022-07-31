@@ -87,6 +87,8 @@ GEM
       responders
       warden (~> 1.2.3)
     digest (3.1.0)
+    doorkeeper (5.5.4)
+      railties (>= 5)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -275,6 +277,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise
+  doorkeeper
   dotenv-rails
   grape
   jbuilder (~> 2.7)
