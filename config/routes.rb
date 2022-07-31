@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   
   use_doorkeeper
   devise_for :users
-  resources :bank_accounts, only: %i[new create edit update destroy]
-  resources :cards, only: %i[new create edit update destroy]
+  resources :bank_accounts, only: %i[new create edit update]
+  resources :cards, only: %i[new create edit update]
+  get "/profile", to: "profile#get_profile"
 
   mount Api::Base, at: '/'
   namespace :api, defaults: { format: 'json' } do

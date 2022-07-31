@@ -11,23 +11,28 @@
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <%= link_to root_path, class: "nav-link text-white h5" do %>
-            Purchases
-          <% end %>
-        </li>
-        <li class="nav-item">
-          <%= link_to root_path, class: "nav-link text-white h5" do %>
-            Transactions
-          <% end %>
-        </li>
-        <li class="nav-item">
-          <% if user_signed_in? %>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to root_path, class: "nav-link text-white h5" do %>
+              Purchases
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to root_path, class: "nav-link text-white h5" do %>
+              Transactions
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to profile_path, class: "nav-link text-white h5" do %>
+              <%= "#{current_user.first_name} #{current_user.last_name}" %>
+            <% end %>
+          </li>
+          <li class="nav-item">
             <%= link_to destroy_user_session_path, method: :delete, class: "nav-link text-white h5" do %>
               Logout
             <% end %>
-          <% end %>
-        </li>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
