@@ -8,9 +8,13 @@ class CardsController < ApplicationController
     @current_user = current_user
     if @card.save
       @current_user.card_id = @card.id
-      @current_user.save
+      if @current_user.bank_account_id.present?
+        BankAccount.find(@current_user.bank_account_id).destroy
+        @current_user.bank_account_id = nil
+      end
+      @current_user.save!
       redirect_to root_path,
-                  notice: 'Card save successfully'
+                  notice: 'Card saved successfully'
     else
       render :new
     end
