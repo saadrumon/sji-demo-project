@@ -1,2 +1,8 @@
-h1 Cards#edit
-p Find me in app/views/cards/edit.html.slim
+.row
+  .col-12
+    .card.my-4.card-default
+      = simple_form_for @card, url: card_path(@card), html: { class: 'form' } do |f|
+        .card-header.card-header-border-bottom.d-flex.justify-content-between
+          h2.text-brand.pl-3 Edit card information
+        .card-body
+          = render partial: 'form', locals: { f: f }

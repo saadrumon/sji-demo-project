@@ -1,26 +1,26 @@
-fieldset.form-group
+fieldset.form-group.my-2
   label Card type
-  span.req-field title="required" *
+  span.req-field.text-danger title="required" &nbsp;*
   = f.select :card_type,
           Card.card_types.keys.to_a, { prompt: 'Select one' },
           required: true,
           class: 'form-control input-sm form-control-sm'
 
-fieldset.form-group
+fieldset.form-group.my-2
   label Card holder name
-  span.req-field title="required" *
+  span.req-field.text-danger title="required" &nbsp;*
   = f.text_field :card_holder_name, pattern: '.*\S.*',
           class: 'form-control form-control-sm input-sm', required: true
 
-fieldset.form-group
+fieldset.form-group.my-2
   label Card number
-  span.req-field title="required" *
+  span.req-field.text-danger title="required" &nbsp;*
   = f.text_field :card_number, pattern: '.*\S.*',
           class: 'form-control form-control-sm input-sm', required: true
 
-fieldset.form-group
+fieldset.form-group.my-2
   label Expiration date
-  span.req-field title="required" *
+  span.req-field.text-danger title="required" &nbsp;*
   = f.date_field :expiration_date,
           class: 'form-control input-sm form-control-sm', required: true
 
@@ -30,7 +30,7 @@ fieldset.form-group
     span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
     span = @card.persisted? ? 'Update' : 'Save'
   = link_to root_path,
-          class: 'button btn btn-sm btn-secondary ml-2' do
+          class: 'button btn btn-sm btn-secondary ms-2' do
     i.mdi.mdi-close-circle.mr-2 role="status"
     span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
     span Discard

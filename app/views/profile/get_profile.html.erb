@@ -1,0 +1,177 @@
+<div class="row">
+  <h1 class="col-md-12 mt-4">User Details</h1>
+</div>
+
+<div class="card mb-4 p-4">
+  <div class="card-body">
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <td class="col-md-6 border-right">
+            <p>
+              <strong>First Name:</strong>
+            </p>
+          </td>
+          <td class="col-md-6">
+            <p>
+              <%= current_user.first_name %>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-md-6 border-right">
+            <p>
+              <strong>Last Name:</strong>
+            </p>
+          </td>
+          <td class="col-md-6">
+            <p>
+              <%= current_user.last_name %>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-md-6 border-right">
+            <p>
+              <strong>Email:</strong>
+            </p>
+          </td>
+          <td class="col-md-6">
+            <p>
+              <%= current_user.email %>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-md-6 border-right">
+            <p>
+              <strong>Payment Method:</strong>
+            </p>
+          </td>
+          <td class="col-md-6">
+            <p>
+              <%= current_user.payment_method %>
+            </p>
+          </td>
+        </tr>
+        <% if @bank_account %>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Bank Name:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @bank_account.bank_name %>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Routing Number:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @bank_account.routing_number %>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Account Holder Name:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @bank_account.account_holder_name %>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Account Number:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @bank_account.account_number %>
+              </p>
+            </td>
+          </tr>
+        <% elsif @card %>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Card Type:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @card.card_type %>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Card Holder Name:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @card.card_holder_name %>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Card Number:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @card.card_number %>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong>Card Expiration Date:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= @card.expiration_date %>
+              </p>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%- if @bank_account %>
+      <%= link_to "Edit bank account information", edit_bank_account_path(@bank_account) %><br />
+      <%= link_to "Switch to card", new_card_path %><br />
+    <% elsif @card %>
+      <%= link_to "Edit card information", edit_card_path(@card) %><br />
+      <%= link_to "Switch to bank account", new_bank_account_path %><br />
+    <% end %>
+  </div>
+
+  <div class="card-footer d-flex justify-content-center">
+    <%= link_to edit_user_registration_path, class: "btn btn-primary btn-sm mr-2" do %>
+      <i class="mdi mdi-account-edit mr-2" aria-hidden="true"></i>
+      Edit
+    <% end %>
+    <%= link_to root_path, class: "btn btn-secondary btn-sm ms-2" do %>
+      <i class="mdi mdi-arrow-left mr-2" aria-hidden="true"></i>
+      Discard
+    <% end %>
+  </div>
+</div>

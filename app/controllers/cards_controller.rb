@@ -1,4 +1,6 @@
 class CardsController < ApplicationController
+  before_action :set_card, only: %i[edit update]
+
   def new
     @card = Card.new
   end
@@ -8,24 +10,36 @@ class CardsController < ApplicationController
     @current_user = current_user
     if @card.save
       @current_user.card_id = @card.id
-      @current_user.save
+      bank_account = nil
+      if @current_user.bank_account_id
+        bank_account = BankAccount.find(@current_user.bank_account_id)
+        @current_user.bank_account_id = nil
+      end
+      @current_user.save!
+      bank_account.destroy if bank_account
       redirect_to root_path,
-                  notice: 'Card save successfully'
+                  notice: 'Card saved successfully'
     else
       render :new
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
-  end
-
-  def destroy
+    if @card.update(card_params)
+      redirect_to root_path,
+          notice: "Card was successfully updated."
+    else
+      render :edit
+    end
   end
 
   private
+  def set_card
+    @card = Card.find(params[:id])
+  end
+
   def card_params
     params.require(:card).permit(:card_id,
                                          :card_type,
