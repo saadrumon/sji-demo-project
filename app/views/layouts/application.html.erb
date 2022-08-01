@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SjiDemoProject</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= render 'application/navbar' %>
+    <div class='container'>
+      <% flash.each do |type, message| %>
+        <div class="auto-hide alert <%= bootstrap_class_for(type) %>">
+          <%= message.html_safe %>
+        </div>
+      <% end %>
+      <%= yield %>
+    </div>
+  </body>
+</html>
