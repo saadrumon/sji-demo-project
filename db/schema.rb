@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_31_122514) do
+ActiveRecord::Schema.define(version: 2022_07_31_221258) do
 
   create_table "bank_accounts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "bank_name"
@@ -58,6 +58,17 @@ ActiveRecord::Schema.define(version: 2022_07_31_122514) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "purchases", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "volume"
+    t.integer "amount"
+    t.integer "status"
+    t.integer "type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_purchases_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -79,6 +90,7 @@ ActiveRecord::Schema.define(version: 2022_07_31_122514) do
   end
 
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "purchases", "users"
   add_foreign_key "users", "bank_accounts"
   add_foreign_key "users", "cards"
 end
