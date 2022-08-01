@@ -17,7 +17,7 @@
       <th>Volume</th>
       <th>Amount</th>
       <th>Status</th>
-      <th>Type</th>
+      <th>Payment Type</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -31,23 +31,17 @@
         <td><%= purchase.volume %></td>
         <td><%= purchase.amount %></td>
         <td><%= purchase.status %></td>
+        <td><%= purchase.payment_type %></td>
         <td>
           <% if current_user.is_admin %>
-            <%= button_to edit_purchase_path(purchase), 
-              title: 'Edit', 
-              method: :get,
-              'data-toggle': 'tooltip', 
-              'data-placement': 'right',
-              class: "btn btn-primary mr-2"
-            %>
+            <%= link_to edit_purchase_path(purchase), class: "btn btn-success my-2" do %>
+              Edit
+            <% end %>
           <% elsif !purchase.Paid? %>
-            <%= button_to edit_purchase_path(purchase), 
-              title: 'Pay', 
-              method: :get,
-              'data-toggle': 'tooltip', 
-              'data-placement': 'right',
-              class: "btn btn-success mr-2"
-            %>
+            <%# TODO: NEED TO IMPLEMENT TRANSACTION PATH LATER %>
+            <%= link_to root_path, class: "btn btn-success my-2" do %>
+              Pay
+            <% end %>
           <% else %>
             N/A
           <% end %>
