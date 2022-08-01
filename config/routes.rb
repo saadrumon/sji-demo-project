@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   devise_for :users
   resources :bank_accounts, only: %i[new create edit update]
   resources :cards, only: %i[new create edit update]
+  resources :purchases, only: %i[index new create edit update]
   get "/profile", to: "profile#get_profile"
 
   mount Api::Base, at: '/'

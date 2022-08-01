@@ -1,0 +1,52 @@
+<div class="row">
+  <h1 class="col-md-6">Purchases</h1>
+  <div class="col-md-6 text-right">
+    <%= link_to new_purchase_path, class: "btn btn-success my-2" do %>
+      <i class="mdi mdi-plus me-2" aria-hidden="true"></i>
+      Add New Purchase
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-bg table-hover datatable">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Buyer Name</th>
+      <th>Buyer Email</th>
+      <th>Volume</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Payment Type</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @purchases.each_with_index do |purchase, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= "#{purchase.user.first_name} #{purchase.user.last_name}" %></td>
+        <td><%= purchase.user.email %></td>
+        <td><%= purchase.volume %></td>
+        <td><%= purchase.amount %></td>
+        <td><%= purchase.status %></td>
+        <td><%= purchase.payment_type %></td>
+        <td>
+          <% if current_user.is_admin %>
+            <%= link_to edit_purchase_path(purchase), class: "btn btn-success my-2" do %>
+              Edit
+            <% end %>
+          <% elsif !purchase.Paid? %>
+            <%# TODO: NEED TO IMPLEMENT TRANSACTION PATH LATER %>
+            <%= link_to root_path, class: "btn btn-success my-2" do %>
+              Pay
+            <% end %>
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
