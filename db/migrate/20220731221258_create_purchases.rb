@@ -7,6 +7,7 @@ class CreatePurchases < ActiveRecord::Migration[6.1]
       t.integer :status
       t.integer :payment_type
       t.float :adjustment_amount
+      t.float :payable_amount
 
       t.timestamps
     end

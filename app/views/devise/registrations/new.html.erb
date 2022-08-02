@@ -17,11 +17,8 @@
     <%= f.label :payment_method %><br />
     <%= f.select :payment_method, 
       User.payment_methods.keys.to_a, 
-      autofocus: true, 
-      autocomplete: "payment_method", 
-      required: true, 
-      prompt: "Select a payment method",
-      class: "form-control"
+      { prompt: "Select a payment method" }, 
+      { class: "form-control" }
     %>
   </div>
 

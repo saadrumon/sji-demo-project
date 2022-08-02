@@ -1,4 +1,6 @@
 class Purchase < ApplicationRecord
+  before_create :set_amount
+
   belongs_to :user
   PAY_NOW = 0
   PAY_LATER = 1
@@ -9,28 +11,31 @@ class Purchase < ApplicationRecord
   }
 
   UNPAID = 0
-  PENDING = 1
-  PARTIALLY_PAID = 2
-  PAID = 3
-  WITHDRAW = 4
+  PAID = 1
+  WITHDRAW = 2
 
   enum status: {
     Unpaid: UNPAID,
-    Pending: PENDING,
-    Partially_paid: PARTIALLY_PAID,
     Paid: PAID,
     Withdraw: WITHDRAW
   }
+
   def adjust_amount(adjustment_amount)
-    if adjustment_amount > self.amount
-      self.status = PARTIALLY_PAID
-      self.amount = adjustment_amount - self.amount
-    elsif adjustment_amount < self.amount
-      self.status = WITHDRAW
-      self.amount = self.amount - adjustment_amount
+    if adjustment_amount > amount
+      status = UNPAID
+    elsif adjustment_amount < amount
+      status = WITHDRAW
     else
-      self.status = PAID
+      status = PAID
     end
-    save
+    self.payable_amount = adjustment_amount - (Paid? ? amount : 0)
+    self.amount = adjustment_amount
+    save!
+  end
+
+  def set_amount
+    self.amount = volume.to_f * ENV["FUEL_COST_PER_VOLUME"].to_f
+    self.payable_amount = amount
+    self.status = Purchase::UNPAID
   end
 end
