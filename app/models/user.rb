@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :purchases, dependent: :destroy
+
   validates :first_name, presence: true, length: { maximum: 250 }
   validates :last_name, presence: true, length: { maximum: 250 }
   validates :payment_method, presence: true, unless: -> { is_admin }
