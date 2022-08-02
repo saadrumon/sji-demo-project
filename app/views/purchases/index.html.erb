@@ -1,7 +1,7 @@
 <div class="row">
   <h1 class="col-md-6">Purchases</h1>
-  <div class="col-md-6 text-right">
-    <%= link_to new_purchase_path, class: "btn btn-success my-2" do %>
+  <div class="col-md-6 d-flex justify-content-end">
+    <%= link_to new_purchase_path, class: "btn btn-sm btn-primary my-2" do %>
       <i class="mdi mdi-plus me-2" aria-hidden="true"></i>
       Add New Purchase
     <% end %>
@@ -16,6 +16,7 @@
       <th>Buyer Email</th>
       <th>Volume</th>
       <th>Amount</th>
+      <th>Payable Amount</th>
       <th>Status</th>
       <th>Payment Type</th>
       <th>Actions</th>
@@ -30,16 +31,17 @@
         <td><%= purchase.user.email %></td>
         <td><%= purchase.volume %></td>
         <td><%= purchase.amount %></td>
-        <td><%= purchase.status %></td>
-        <td><%= purchase.payment_type %></td>
+        <td><%= purchase.payable_amount %></td>
+        <td><%= render_status_badge_payment_status(purchase) %></td>
+        <td><%= render_status_badge_payment_type(purchase) %></td>
         <td>
           <% if current_user.is_admin %>
-            <%= link_to edit_purchase_path(purchase), class: "btn btn-success my-2" do %>
+            <%= link_to edit_purchase_path(purchase), class: "btn btn-sm btn-success col-12 my-2" do %>
               Edit
             <% end %>
           <% elsif !purchase.Paid? %>
             <%# TODO: NEED TO IMPLEMENT TRANSACTION PATH LATER %>
-            <%= link_to root_path, class: "btn btn-success my-2" do %>
+            <%= link_to root_path, class: "btn btn-sm btn-success col-12 my-2" do %>
               Pay
             <% end %>
           <% else %>

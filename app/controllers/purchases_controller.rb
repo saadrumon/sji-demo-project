@@ -9,20 +9,12 @@ class PurchasesController < ApplicationController
   end
 
   def new
-    @purchase = Purchase.new
+    @purchase = current_user.purchases.new
   end
 
   def create
-    @purchase = Purchase.new(purchase_params)
-    @current_user = current_user
-    @purchase.amount = params[:purchase][:volume].to_f * ENV["FUEL_COST_PER_VOLUME"].to_f
-    @purchase.user_id = @current_user.id
-    if params[:purchase][:payment_type].eql?('Pay_now')
-      @purchase.status = Purchase::PENDING
-    else
-      @purchase.status = Purchase::UNPAID
-    end
-    if @purchase.save
+    @purchase = current_user.purchases.new(purchase_params)
+    if @purchase.save!
       redirect_to purchases_path,
                   notice: 'Purchase fuel successfully'
     else

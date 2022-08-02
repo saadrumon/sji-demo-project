@@ -6,10 +6,12 @@
 - else
   .card-body.d-flex.bg-warning.my-4
     -if current_user.Bank_account?
-      span.h4.my-4.ms-4 Please add your&nbsp;
-      = link_to 'bank account information', new_bank_account_path(@bank_account), class: "h4 my-4"
-      span.h4.my-4.me-4 &nbsp;to continue
+      p.h4.my-4.ms-4 
+        | Please add your&nbsp;
+        = link_to 'bank account information', new_bank_account_path(@bank_account), class: "h4 my-4"
+        | &nbsp;to continue
     -else
-      span.h4.my-4.ms-4 Please add your&nbsp;
-      = link_to 'card information', new_card_path(@card), class: "h4 my-4"
-      span.h4.my-4.me-4 &nbsp;to continue
+      p.h4.my-4.ms-4 
+        | Please add your&nbsp;
+        = link_to 'card information', new_card_path(@card), class: "h4 my-4"
+        | &nbsp;to continue

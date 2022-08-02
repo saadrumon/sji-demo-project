@@ -28,10 +28,10 @@
 - else
   fieldset.form-group.my-2
     label Amount
-    span.req-field.text-danger title="required" &nbsp;*
+    span.req-field.text-danger title="required"
     = f.number_field :amount,
             autocomplete: 'off',
-            class: 'form-control form-control-sm input-sm', required: true, readonly: true
+            class: 'form-control form-control-sm input-sm', required: true, readonly: true, disabled: true
 
   fieldset.form-group.my-2
     label Adjustment amount
