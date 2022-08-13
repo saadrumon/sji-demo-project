@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-
     devise_parameter_sanitizer
       .permit(:sign_in) do |u|
       u.permit(
@@ -37,7 +36,8 @@ class ApplicationController < ActionController::Base
         :payment_method,
         :email,
         :password,
-        :password_confirmation
+        :password_confirmation,
+        :current_password
       )
     end
   end

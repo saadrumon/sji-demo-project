@@ -1,4 +1,6 @@
 class BankAccount < ApplicationRecord
+  belongs_to :user
+
   validates :routing_number,
             presence: true,
             uniqueness: true,

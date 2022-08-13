@@ -5,6 +5,7 @@ class CreateBankAccounts < ActiveRecord::Migration[6.1]
       t.string :routing_number
       t.string :account_holder_name
       t.string :account_number
+      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end

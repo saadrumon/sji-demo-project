@@ -1,52 +1,38 @@
-- unless @purchase.persisted?
-  fieldset.form-group.my-2
-    label Fuel volume
-    span.req-field.text-danger title="required" &nbsp;*
-    = f.number_field :volume,
-            autocomplete: 'off',
-            class: 'form-control form-control-sm input-sm total-volume', required: true
+fieldset.form-group.my-2
+  label Fuel Volume
+  span.req-field.text-danger title="required" &nbsp;*
+  = f.number_field :volume,
+          autocomplete: 'off',
+          class: 'form-control form-control-sm input-sm', 
+          required: true,
+          readonly: @purchase.persisted?,
+          disabled: @purchase.persisted?
 
-  fieldset.form-group.my-2
-    label Payment type
-    span.req-field.text-danger title="required" &nbsp;*
-    = f.select :payment_type,
-            Purchase.payment_types.keys.to_a, { prompt: 'Select one' },
-            required: true,
-            class: 'form-control input-sm form-control-sm'
+fieldset.form-group.my-2
+  label Unit Cost
+  span.req-field.text-danger title="required" &nbsp;*
+  = f.number_field :unit_cost,
+          autocomplete: 'off',
+          class: 'form-control form-control-sm input-sm', 
+          required: true
 
-  .form-footer.mt-4.pt-2.border-top.d-flex.justify-content-center
-    = button_tag type: 'submit', class: 'button btn btn-sm btn-primary' do
-      i class = " mdi #{ @purchase.persisted? ? 'mdi-arrow-up-bold-circle' : 'mdi-content-save'} mt-0 mr-2" role="status"
-      span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-      span = @purchase.persisted? ? 'Update' : 'Save'
-    = link_to root_path,
-            class: 'button btn btn-sm btn-secondary ms-2' do
-      i.mdi.mdi-close-circle.mr-2 role="status"
-      span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-      span Discard
+fieldset.form-group.my-2
+  label Payment Type
+  span.req-field.text-danger title="required" &nbsp;*
+  = f.select :payment_type,
+          Purchase.payment_types.keys.to_a, { prompt: 'Select one' },
+          required: true,
+          class: 'form-control input-sm form-control-sm',
+          readonly: @purchase.persisted?,
+          disabled: @purchase.persisted?
 
-- else
-  fieldset.form-group.my-2
-    label Amount
-    span.req-field.text-danger title="required"
-    = f.number_field :amount,
-            autocomplete: 'off',
-            class: 'form-control form-control-sm input-sm', required: true, readonly: true, disabled: true
-
-  fieldset.form-group.my-2
-    label Adjustment amount
-    span.req-field.text-danger title="required" &nbsp;*
-    = f.number_field :adjustment_amount,
-            autocomplete: 'off',
-            class: 'form-control form-control-sm input-sm', required: true
-
-  .form-footer.mt-4.pt-2.border-top.d-flex.justify-content-center
-    = button_tag type: 'submit', class: 'button btn btn-sm btn-primary' do
-      i class = " mdi #{ @purchase.persisted? ? 'mdi-arrow-up-bold-circle' : 'mdi-content-save'} mt-0 mr-2" role="status"
-      span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-      span = @purchase.persisted? ? 'Update' : 'Save'
-    = link_to root_path,
-            class: 'button btn btn-sm btn-secondary ms-2' do
-      i.mdi.mdi-close-circle.mr-2 role="status"
-      span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
-      span Discard
+.form-footer.mt-4.pt-2.border-top.d-flex.justify-content-center
+  = button_tag type: 'submit', class: 'button btn btn-sm btn-primary' do
+    i class = " mdi #{ @purchase.persisted? ? 'mdi-arrow-up-bold-circle' : 'mdi-content-save'} mt-0 mr-2" role="status"
+    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+    span = @purchase.persisted? ? 'Update' : 'Save'
+  = link_to root_path,
+          class: 'button btn btn-sm btn-secondary ms-2' do
+    i.mdi.mdi-close-circle.mr-2 role="status"
+    span.spinner-border.spinner-border-sm.mr-2.d-none aria-hidden="true" role="status"
+    span Discard

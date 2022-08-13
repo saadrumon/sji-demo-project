@@ -14,6 +14,7 @@
       <th>#</th>
       <th>Buyer Name</th>
       <th>Buyer Email</th>
+      <th>Unit Cost</th>
       <th>Volume</th>
       <th>Amount</th>
       <th>Payable Amount</th>
@@ -29,6 +30,7 @@
         <td><%= index + 1 %></td>
         <td><%= "#{purchase.user.first_name} #{purchase.user.last_name}" %></td>
         <td><%= purchase.user.email %></td>
+        <td><%= purchase.unit_cost %></td>
         <td><%= purchase.volume %></td>
         <td><%= purchase.amount %></td>
         <td><%= purchase.payable_amount %></td>

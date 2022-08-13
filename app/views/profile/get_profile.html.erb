@@ -6,160 +6,56 @@
   <div class="card-body">
     <table class="table table-borderless">
       <tbody>
-        <tr>
-          <td class="col-md-6 border-right">
-            <p>
-              <strong>First Name:</strong>
-            </p>
-          </td>
-          <td class="col-md-6">
-            <p>
-              <%= current_user.first_name %>
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="col-md-6 border-right">
-            <p>
-              <strong>Last Name:</strong>
-            </p>
-          </td>
-          <td class="col-md-6">
-            <p>
-              <%= current_user.last_name %>
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="col-md-6 border-right">
-            <p>
-              <strong>Email:</strong>
-            </p>
-          </td>
-          <td class="col-md-6">
-            <p>
-              <%= current_user.email %>
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="col-md-6 border-right">
-            <p>
-              <strong>Payment Method:</strong>
-            </p>
-          </td>
-          <td class="col-md-6">
-            <p>
-              <%= current_user.payment_method %>
-            </p>
-          </td>
-        </tr>
-        <% if @bank_account %>
+        <% @user_attrs.each do |attr| %>
           <tr>
             <td class="col-md-6 border-right">
               <p>
-                <strong>Bank Name:</strong>
+                <strong><%= attr.to_s.split('_').map{ |i| i.capitalize }.join(' ') %>:</strong>
               </p>
             </td>
             <td class="col-md-6">
               <p>
-                <%= @bank_account.bank_name %>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-md-6 border-right">
-              <p>
-                <strong>Routing Number:</strong>
-              </p>
-            </td>
-            <td class="col-md-6">
-              <p>
-                <%= @bank_account.routing_number %>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-md-6 border-right">
-              <p>
-                <strong>Account Holder Name:</strong>
-              </p>
-            </td>
-            <td class="col-md-6">
-              <p>
-                <%= @bank_account.account_holder_name %>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-md-6 border-right">
-              <p>
-                <strong>Account Number:</strong>
-              </p>
-            </td>
-            <td class="col-md-6">
-              <p>
-                <%= @bank_account.account_number %>
-              </p>
-            </td>
-          </tr>
-        <% elsif @card %>
-          <tr>
-            <td class="col-md-6 border-right">
-              <p>
-                <strong>Card Type:</strong>
-              </p>
-            </td>
-            <td class="col-md-6">
-              <p>
-                <%= @card.card_type %>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-md-6 border-right">
-              <p>
-                <strong>Card Holder Name:</strong>
-              </p>
-            </td>
-            <td class="col-md-6">
-              <p>
-                <%= @card.card_holder_name %>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-md-6 border-right">
-              <p>
-                <strong>Card Number:</strong>
-              </p>
-            </td>
-            <td class="col-md-6">
-              <p>
-                <%= @card.card_number %>
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="col-md-6 border-right">
-              <p>
-                <strong>Card Expiration Date:</strong>
-              </p>
-            </td>
-            <td class="col-md-6">
-              <p>
-                <%= @card.expiration_date %>
+                <%= current_user.public_send("#{attr}") %>
               </p>
             </td>
           </tr>
         <% end %>
+        <% @bank_attrs&.each do |attr| %>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong><%= attr.to_s.split('_').map{ |i| i.capitalize }.join(' ') %>:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= current_user.bank_account.public_send("#{attr}") %>
+              </p>
+            </td>
+          </tr>
+        <% end %>
+        <% @card_attrs&.each do |attr| %>
+          <tr>
+            <td class="col-md-6 border-right">
+              <p>
+                <strong><%= attr.to_s.split('_').map{ |i| i.capitalize }.join(' ') %>:</strong>
+              </p>
+            </td>
+            <td class="col-md-6">
+              <p>
+                <%= current_user.card.public_send("#{attr}") %>
+              </p>
+            </td>
+          </tr>
+        <% end %>
+
       </tbody>
     </table>
-    <%- if @bank_account %>
-      <%= link_to "Edit bank account information", edit_bank_account_path(@bank_account) %><br />
+    <% if current_user.bank_account.present? %>
+      <%= link_to "Edit bank account information", edit_bank_account_path(current_user.bank_account) %><br />
       <%= link_to "Switch to card", new_card_path %><br />
-    <% elsif @card %>
-      <%= link_to "Edit card information", edit_card_path(@card) %><br />
+    <% elsif current_user.card.present? %>
+      <%= link_to "Edit card information", edit_card_path(current_user.card) %><br />
       <%= link_to "Switch to bank account", new_bank_account_path %><br />
     <% end %>
   </div>

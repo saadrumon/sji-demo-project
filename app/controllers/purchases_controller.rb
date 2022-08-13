@@ -1,10 +1,11 @@
 class PurchasesController < ApplicationController
   before_action :set_purchase, only: %i[edit update]
+
   def index
-    if current_user.is_admin
+    if current_user.is_admin?
       @purchases = Purchase.all
     else
-      @purchases = Purchase.where(user_id: current_user.id)
+      @purchases = current_user.purchases
     end
   end
 
@@ -14,6 +15,7 @@ class PurchasesController < ApplicationController
 
   def create
     @purchase = current_user.purchases.new(purchase_params)
+    @purchase.set_amount(current_user)
     if @purchase.save!
       redirect_to purchases_path,
                   notice: 'Purchase fuel successfully'
@@ -22,23 +24,27 @@ class PurchasesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
-    @purchase.adjust_amount(params[:purchase][:adjustment_amount].to_f)
-    redirect_to purchases_path,
-                notice: 'Adjustment successfully'
+    if @purchase.update(purchase_params)
+      redirect_to purchases_path,
+          notice: "Purchase was successfully updated."
+    else
+      render :edit
+    end
   end
 
   private
   def set_purchase
     @purchase = Purchase.find(params[:id])
   end
+
   def purchase_params
     params.require(:purchase).permit(
-                                 :volume,
-                                 :payment_type,
-                                 :adjustment_amount)
+      :unit_cost,
+      :volume,
+      :payment_type
+    )
   end
 end

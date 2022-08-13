@@ -1,7 +1,8 @@
 class Purchase < ApplicationRecord
-  before_create :set_amount
 
   belongs_to :user
+  has_many :payments, dependent: :destroy
+
   PAY_NOW = 0
   PAY_LATER = 1
 
@@ -12,30 +13,22 @@ class Purchase < ApplicationRecord
 
   UNPAID = 0
   PAID = 1
-  WITHDRAW = 2
 
   enum status: {
     Unpaid: UNPAID,
-    Paid: PAID,
-    Withdraw: WITHDRAW
+    Paid: PAID
   }
 
-  def adjust_amount(adjustment_amount)
-    if adjustment_amount > amount
-      status = UNPAID
-    elsif adjustment_amount < amount
-      status = WITHDRAW
-    else
-      status = PAID
-    end
-    self.payable_amount = adjustment_amount - (Paid? ? amount : 0)
-    self.amount = adjustment_amount
-    save!
+  # ToDo: Need to define this mehtod for cost adjustment
+  def adjust_amount
   end
 
-  def set_amount
-    self.amount = volume.to_f * ENV["FUEL_COST_PER_VOLUME"].to_f
-    self.payable_amount = amount
-    self.status = Purchase::UNPAID
+  def set_amount(current_user)
+    self.amount = volume.to_f * unit_cost.to_f
+    deduction_amount = [amount, current_user.refund_amount].min
+    self.payable_amount = amount - deduction_amount
+    current_user.refund_amount -= deduction_amount
+    current_user.save!
+    self.status = (payable_amount > 0) ? Purchase::UNPAID : Purchase::PAID
   end
 end

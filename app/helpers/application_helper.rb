@@ -28,7 +28,7 @@ module ApplicationHelper
     if object.Pay_now?
       output += "<span class='badge bg-info'>NOW</span>"
     elsif object.Pay_later?
-      output += "<span class='badge bg-info'>LATER</span>"
+      output += "<span class='badge bg-warning'>LATER</span>"
     end
 
     output.html_safe
