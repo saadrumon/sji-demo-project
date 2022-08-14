@@ -1,4 +1,4 @@
-- if current_user.is_admin? || current_user.card.present? || current_user.bank_account.present?
+- if current_user.is_admin? || current_user.default_bank_account.present? || current_user.default_card.present?
   hr
     marquee width="100%" direction="left"
       h2.text-brand.text-center Welcome to Fuel management system

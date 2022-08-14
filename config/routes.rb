@@ -5,7 +5,18 @@ Rails.application.routes.draw do
   devise_for :users
   resources :bank_accounts, only: %i[new create edit update]
   resources :cards, only: %i[new create edit update]
-  resources :purchases, only: %i[index new create edit update]
+  resources :purchases, only: %i[index new create edit update] do
+    resources :payments, only: %i[show new create edit update] do
+      member do
+        get :verify
+        get :bank_account
+        post :save_bank_account
+        get :card
+        post :save_card
+      end
+    end
+  end
+  get "/payments", to: "payments#index"
   get "/profile", to: "profile#get_profile"
 
   mount Api::Base, at: '/'

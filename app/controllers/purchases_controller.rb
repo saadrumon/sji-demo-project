@@ -17,8 +17,13 @@ class PurchasesController < ApplicationController
     @purchase = current_user.purchases.new(purchase_params)
     @purchase.set_amount(current_user)
     if @purchase.save!
-      redirect_to purchases_path,
-                  notice: 'Purchase fuel successfully'
+      if @purchase.Pay_now?
+        redirect_to new_purchase_payment_path(@purchase),
+                    notice: 'Please insert payment information'
+      else
+        redirect_to purchases_path,
+                    notice: 'Purchase fuel successfully'
+      end
     else
       render :new
     end
@@ -27,6 +32,7 @@ class PurchasesController < ApplicationController
   def edit; end
 
   def update
+    @purchase.adjust_amount(purchase_params[:unit_cost].to_f)
     if @purchase.update(purchase_params)
       redirect_to purchases_path,
           notice: "Purchase was successfully updated."

@@ -10,7 +10,7 @@
     </button>
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <% if user_signed_in? %>
+      <% if user_signed_in? and (current_user.default_bank_account.present? or current_user.default_card.present? or current_user.is_admin?) %>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <%= link_to purchases_path, class: "nav-link text-white h5" do %>
@@ -18,11 +18,13 @@
             <% end %>
           </li>
           <li class="nav-item">
-            <%= link_to root_path, class: "nav-link text-white h5" do %>
+            <%= link_to payments_path, class: "nav-link text-white h5" do %>
               Payments
             <% end %>
           </li>
         </ul>
+      <% end %>
+      <% if user_signed_in? %>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item ">
             <%= link_to profile_path, { class: "nav-link text-white h5 dropdown-toggle", id: "navbarScrollingDropdown", role: "button", "data-bs-toggle": "dropdown", "aria-expanded": "false" } do %>

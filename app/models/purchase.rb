@@ -13,14 +13,29 @@ class Purchase < ApplicationRecord
 
   UNPAID = 0
   PAID = 1
+  IN_REVIEW = 2
 
   enum status: {
     Unpaid: UNPAID,
-    Paid: PAID
+    Paid: PAID,
+    In_review: IN_REVIEW
   }
 
-  # ToDo: Need to define this mehtod for cost adjustment
-  def adjust_amount
+  def adjust_amount(unit_cost)
+    paid_amount = self.paid_amount
+    refund_amount = self.user.refund_amount
+    new_amount = unit_cost * self.volume
+    if paid_amount >= new_amount
+      self.user.update(refund_amount: refund_amount + paid_amount - new_amount)
+      self.status = Purchase::PAID
+      self.paid_amount = new_amount
+      self.payable_amount = 0
+    else
+      self.status = Purchase::UNPAID
+      self.payable_amount = new_amount - paid_amount
+    end
+    self.amount = new_amount
+    save!
   end
 
   def set_amount(current_user)

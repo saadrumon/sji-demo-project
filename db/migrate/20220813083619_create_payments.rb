@@ -4,6 +4,7 @@ class CreatePayments < ActiveRecord::Migration[6.1]
       t.string :transaction_code
       t.integer :status
       t.integer :method
+      t.float :amount
       t.references :purchase, null: false, foreign_key: true
 
       t.timestamps

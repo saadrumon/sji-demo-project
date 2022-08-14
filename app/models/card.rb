@@ -1,10 +1,8 @@
 class Card < ApplicationRecord
   belongs_to :user
+  belongs_to :payment, optional: true
 
-  validates :card_number,
-            presence: true,
-            uniqueness: true,
-            length: { maximum: 16 }
+  validates :card_number, presence: true, length: { maximum: 16 }
   validates :card_holder_name, presence: true, length: { maximum: 250 }
   validates :card_type, presence: true
   validates :expiration_date, presence: true

@@ -2,13 +2,16 @@ class BankAccountsController < ApplicationController
   before_action :set_bank_account, only: %i[edit update]
 
   def new
-    @bank_account = current_user.build_bank_account
+    @bank_account = current_user.bank_accounts.new
   end
 
   def create
-    @bank_account = current_user.build_bank_account(bank_account_params)
+    @bank_account = current_user.bank_accounts.new(bank_account_params)
     if @bank_account.save
-      current_user.card&.destroy
+      if bank_account_params[:is_default].eql? "true"
+        current_user.update(payment_method: User::BANK_ACCOUNT)
+        current_user.default_card&.update(is_default: false)
+      end
       redirect_to root_path,
                   notice: 'Bank account save successfully'
     else
@@ -29,7 +32,7 @@ class BankAccountsController < ApplicationController
   
   private
   def set_bank_account
-    @bank_account = current_user.bank_account
+    @bank_account = BankAccount.find(params[:id])
   end
 
   def bank_account_params
@@ -37,7 +40,8 @@ class BankAccountsController < ApplicationController
       :bank_name,
       :routing_number,
       :account_holder_name,
-      :account_number
+      :account_number,
+      :is_default
     )
   end
 end

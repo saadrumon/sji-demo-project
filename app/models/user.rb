@@ -5,8 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :purchases, dependent: :destroy
-  has_one :bank_account, dependent: :destroy
-  has_one :card, dependent: :destroy
+  has_many :bank_accounts, dependent: :destroy
+  has_many :cards, dependent: :destroy
 
   validates :first_name, presence: true, length: { maximum: 250 }
   validates :last_name, presence: true, length: { maximum: 250 }
@@ -23,6 +23,26 @@ class User < ApplicationRecord
 
   def is_admin?
     is_admin == true
+  end
+
+  def default_bank_account
+    bank_accounts&.find_by(is_default: true)
+  end
+
+  def default_card
+    cards&.find_by(is_default: true)
+  end
+
+  def get_payments
+    if is_admin?
+      payments = Payment.all
+    else
+      payments = []
+      purchases.each do |purchase|
+        payments += purchase.payments
+      end
+    end
+    payments
   end
 
   def self.authenticate(email, password)
