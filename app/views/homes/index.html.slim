@@ -1,4 +1,4 @@
-- if current_user.is_admin? || current_user.card_id.present? || current_user.bank_account_id.present?
+- if current_user.is_admin? || current_user.default_bank_account.present? || current_user.default_card.present?
   hr
     marquee width="100%" direction="left"
       h2.text-brand.text-center Welcome to Fuel management system
@@ -8,10 +8,10 @@
     -if current_user.Bank_account?
       p.h4.my-4.ms-4 
         | Please add your&nbsp;
-        = link_to 'bank account information', new_bank_account_path(@bank_account), class: "h4 my-4"
+        = link_to 'bank account information', new_bank_account_path, class: "h4 my-4"
         | &nbsp;to continue
-    -else
+    -elsif current_user.Card?
       p.h4.my-4.ms-4 
         | Please add your&nbsp;
-        = link_to 'card information', new_card_path(@card), class: "h4 my-4"
+        = link_to 'card information', new_card_path, class: "h4 my-4"
         | &nbsp;to continue

@@ -1,0 +1,58 @@
+<div class="row">
+  <h1>Payments</h1>
+</div>
+
+<table class="table table-bg table-hover datatable">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Buyer Name</th>
+      <th>Buyer Email</th>
+      <th>Amount</th>
+      <th>Transaction Code</th>
+      <th>Status</th>
+      <th>Method</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @payments.each_with_index do |payment, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= "#{payment.purchase.user.first_name} #{payment.purchase.user.last_name}" %></td>
+        <td><%= payment.purchase.user.email %></td>
+        <td><%= payment.purchase.payable_amount %></td>
+        <td><%= payment.transaction_code %></td>
+        <td><%= render_status_badge_payment_status(payment) %></td>
+        <td><%= render_status_badge_payment_method(payment) %></td>
+        <td>
+          <% if current_user.is_admin? %>
+            <% if payment.Pending? %>
+              <%= link_to verify_purchase_payment_path(payment.purchase, payment), class: "btn btn-sm btn-info my-2" do %>
+                <i class="mdi mdi-account-check mr-2" aria-hidden="true"></i>
+                Verify
+              <% end %>
+            <% end %>
+          <% else %>
+            <% if payment.Incomplete? %>
+              <%= link_to payment.Bank_account? ? bank_account_purchase_payment_path(payment.purchase, payment) : card_purchase_payment_path(payment.purchase, payment), class: "btn btn-sm btn-info my-2" do %>
+                <i class="mdi mdi-timer-sand mr-2" aria-hidden="true"></i>
+                Complete Info
+              <% end %>
+            <% elsif payment.Pending? %>
+              <%= link_to edit_purchase_payment_path(payment.purchase, payment), class: "btn btn-sm btn-success my-2" do %>
+                <i class="mdi mdi-account-edit mr-2" aria-hidden="true"></i>
+                Edit
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= link_to purchase_payment_path(payment.purchase, payment), class: "btn btn-sm btn-warning my-2" do %>
+            <i class="mdi mdi-eye mr-2" aria-hidden="true"></i>
+            View
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -10,15 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_31_221258) do
+ActiveRecord::Schema.define(version: 2022_08_13_145231) do
 
   create_table "bank_accounts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "bank_name"
     t.string "routing_number"
     t.string "account_holder_name"
     t.string "account_number"
+    t.bigint "user_id", null: false
+    t.boolean "is_default", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "payment_id"
+    t.index ["payment_id"], name: "index_bank_accounts_on_payment_id"
+    t.index ["user_id"], name: "index_bank_accounts_on_user_id"
   end
 
   create_table "cards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -26,8 +31,13 @@ ActiveRecord::Schema.define(version: 2022_07_31_221258) do
     t.string "card_holder_name"
     t.string "card_number"
     t.date "expiration_date"
+    t.bigint "user_id", null: false
+    t.boolean "is_default", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "payment_id"
+    t.index ["payment_id"], name: "index_cards_on_payment_id"
+    t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
   create_table "oauth_access_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -58,13 +68,25 @@ ActiveRecord::Schema.define(version: 2022_07_31_221258) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "payments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "transaction_code"
+    t.integer "status"
+    t.integer "method"
+    t.float "amount"
+    t.bigint "purchase_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchase_id"], name: "index_payments_on_purchase_id"
+  end
+
   create_table "purchases", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.float "unit_cost"
     t.float "volume"
     t.float "amount"
     t.integer "status"
     t.integer "payment_type"
-    t.float "adjustment_amount"
+    t.float "paid_amount", default: 0.0, null: false
     t.float "payable_amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -82,17 +104,17 @@ ActiveRecord::Schema.define(version: 2022_07_31_221258) do
     t.string "first_name"
     t.string "last_name"
     t.integer "payment_method"
+    t.float "refund_amount", default: 0.0
     t.boolean "is_admin", default: false
-    t.bigint "bank_account_id"
-    t.bigint "card_id"
-    t.index ["bank_account_id"], name: "index_users_on_bank_account_id"
-    t.index ["card_id"], name: "index_users_on_card_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "bank_accounts", "payments"
+  add_foreign_key "bank_accounts", "users"
+  add_foreign_key "cards", "payments"
+  add_foreign_key "cards", "users"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "payments", "purchases"
   add_foreign_key "purchases", "users"
-  add_foreign_key "users", "bank_accounts"
-  add_foreign_key "users", "cards"
 end

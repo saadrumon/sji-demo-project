@@ -1,0 +1,8 @@
+.row
+  .col-12
+    .card.my-4.card-default
+      = simple_form_for @card, url: save_card_purchase_payment_path(@purchase, @payment), html: { class: 'form' } do |f|
+        .card-header.card-header-border-bottom.d-flex.justify-content-between
+          h2.text-brand.pl-3 Card information
+        .card-body
+          = render partial: 'cards/form', locals: { f: f }
