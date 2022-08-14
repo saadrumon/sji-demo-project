@@ -23,6 +23,9 @@ fieldset.form-group.my-2
   = f.text_field :account_number, pattern: '.*\S.*',
           class: 'form-control form-control-sm input-sm', required: true
 
+fieldset
+  = f.hidden_field :is_default, value: @payment.nil? ? true : false
+
 .form-footer.mt-4.pt-2.border-top.d-flex.justify-content-center
   = button_tag type: 'submit', class: 'button btn btn-sm btn-primary' do
     i class = " mdi #{ @bank_account.persisted? ? 'mdi-arrow-up-bold-circle' : 'mdi-content-save'} mt-0 mr-2" role="status"

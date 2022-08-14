@@ -5,6 +5,8 @@ class CreateCards < ActiveRecord::Migration[6.1]
       t.string :card_holder_name
       t.string :card_number
       t.date :expiration_date
+      t.references :user, null: false, foreign_key: true
+      t.boolean :is_default, default: false
 
       t.timestamps
     end

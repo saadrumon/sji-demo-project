@@ -1,12 +1,12 @@
 <div class="row">
-  <h1 class="col-md-12 mt-4">User Details</h1>
+  <h1 class="col-md-12 mt-4">Payment Details</h1>
 </div>
 
 <div class="card mb-4 p-4">
   <div class="card-body">
     <table class="table table-borderless">
       <tbody>
-        <% @user_attrs.each do |attr| %>
+        <% @payment.attributes.each do |attr, value| %>
           <tr>
             <td class="col-md-6 border-right">
               <p>
@@ -15,12 +15,12 @@
             </td>
             <td class="col-md-6">
               <p>
-                <%= current_user.public_send("#{attr}") %>
+                <%= value %>
               </p>
             </td>
           </tr>
         <% end %>
-        <% @bank_attrs&.each do |attr| %>
+        <% @payment.bank_account&.attributes&.each do |attr, value| %>
           <tr>
             <td class="col-md-6 border-right">
               <p>
@@ -29,12 +29,12 @@
             </td>
             <td class="col-md-6">
               <p>
-                <%= current_user.default_bank_account.public_send("#{attr}") %>
+                <%= value %>
               </p>
             </td>
           </tr>
         <% end %>
-        <% @card_attrs&.each do |attr| %>
+        <% @payment.card&.attributes&.each do |attr, value| %>
           <tr>
             <td class="col-md-6 border-right">
               <p>
@@ -43,31 +43,35 @@
             </td>
             <td class="col-md-6">
               <p>
-                <%= current_user.default_card.public_send("#{attr}") %>
+                <%= value %>
               </p>
             </td>
           </tr>
         <% end %>
-
       </tbody>
     </table>
-    <% if current_user.default_bank_account.present? %>
-      <%= link_to "Edit bank account information", edit_bank_account_path(current_user.default_bank_account) %><br />
-      <%= link_to "Switch to card", new_card_path %><br />
-    <% elsif current_user.default_card.present? %>
-      <%= link_to "Edit card information", edit_card_path(current_user.default_card) %><br />
-      <%= link_to "Switch to bank account", new_bank_account_path %><br />
-    <% end %>
   </div>
 
   <div class="card-footer d-flex justify-content-center">
-    <%= link_to edit_user_registration_path, class: "btn btn-primary btn-sm mr-2" do %>
-      <i class="mdi mdi-account-edit mr-2" aria-hidden="true"></i>
-      Edit
-    <% end %>
-    <%= link_to root_path, class: "btn btn-secondary btn-sm ms-2" do %>
-      <i class="mdi mdi-arrow-left mr-2" aria-hidden="true"></i>
-      Discard
+    <% if current_user.is_admin? %>
+      <% if @payment.Pending? %>
+        <%= link_to verify_purchase_payment_path(@purchase, @payment), class: "btn btn-sm btn-success my-2" do %>
+          <i class="mdi mdi-account-check mr-2" aria-hidden="true"></i>
+          Verify
+        <% end %>
+      <% end %>
+    <% else %>
+      <% if @payment.Incomplete? %>
+        <%= link_to @payment.Bank_account? ? bank_account_purchase_payment_path(@purchase, @payment) : card_purchase_payment_path(@purchase, @payment), class: "btn btn-sm btn-success my-2" do %>
+          <i class="mdi mdi-timer-sand mr-2" aria-hidden="true"></i>
+          Complete Info
+        <% end %>
+      <% elsif @payment.Pending? %>
+        <%= link_to edit_purchase_payment_path(@purchase, @payment), class: "btn btn-sm btn-success my-2" do %>
+          <i class="mdi mdi-account-edit mr-2" aria-hidden="true"></i>
+          Edit
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 </div>

@@ -14,6 +14,7 @@
       <th>#</th>
       <th>Buyer Name</th>
       <th>Buyer Email</th>
+      <th>Unit Cost</th>
       <th>Volume</th>
       <th>Amount</th>
       <th>Payable Amount</th>
@@ -29,19 +30,21 @@
         <td><%= index + 1 %></td>
         <td><%= "#{purchase.user.first_name} #{purchase.user.last_name}" %></td>
         <td><%= purchase.user.email %></td>
+        <td><%= purchase.unit_cost %></td>
         <td><%= purchase.volume %></td>
         <td><%= purchase.amount %></td>
         <td><%= purchase.payable_amount %></td>
-        <td><%= render_status_badge_payment_status(purchase) %></td>
-        <td><%= render_status_badge_payment_type(purchase) %></td>
+        <td><%= render_status_badge_purchase_status(purchase) %></td>
+        <td><%= render_status_badge_purchase_type(purchase) %></td>
         <td>
-          <% if current_user.is_admin %>
+          <% if current_user.is_admin? %>
             <%= link_to edit_purchase_path(purchase), class: "btn btn-sm btn-success col-12 my-2" do %>
+              <i class="mdi mdi-account-edit mr-2" aria-hidden="true"></i>
               Edit
             <% end %>
-          <% elsif !purchase.Paid? %>
-            <%# TODO: NEED TO IMPLEMENT TRANSACTION PATH LATER %>
-            <%= link_to root_path, class: "btn btn-sm btn-success col-12 my-2" do %>
+          <% elsif purchase.Unpaid? %>
+            <%= link_to new_purchase_payment_path(purchase), class: "btn btn-sm btn-success col-12 my-2" do %>
+              <i class="mdi mdi-currency-usd mr-2" aria-hidden="true"></i>
               Pay
             <% end %>
           <% else %>
