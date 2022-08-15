@@ -22,7 +22,7 @@
         <td><%= index + 1 %></td>
         <td><%= "#{payment.purchase.user.first_name} #{payment.purchase.user.last_name}" %></td>
         <td><%= payment.purchase.user.email %></td>
-        <td><%= payment.purchase.payable_amount %></td>
+        <td><%= payment.amount %></td>
         <td><%= payment.transaction_code %></td>
         <td><%= render_status_badge_payment_status(payment) %></td>
         <td><%= render_status_badge_payment_method(payment) %></td>
